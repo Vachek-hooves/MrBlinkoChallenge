@@ -79,7 +79,7 @@ android {
 
     namespace "com.mrblinkochallenge"
     defaultConfig {
-        applicationId "com.mrblinkochallenge"
+        applicationId "game.plinko.ball.plinki"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
