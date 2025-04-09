@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, ScrollView,SafeAreaView } from 'react-native';
+import {StyleSheet, Text, View, ScrollView, SafeAreaView} from 'react-native';
 import React from 'react';
-import { useStore } from '../../store/context';
+import {useStore} from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ScoreCard = ({ quizType, name, colors }) => {
-  const { getBestScore, getQuizScores } = useStore();
+const ScoreCard = ({quizType, name, colors}) => {
+  const {getBestScore, getQuizScores} = useStore();
   const bestScore = getBestScore(quizType);
   const allScores = getQuizScores(quizType);
   const lastScore = allScores[0];
@@ -13,20 +13,18 @@ const ScoreCard = ({ quizType, name, colors }) => {
   return (
     <LinearGradient
       colors={colors}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.scoreCard}
-    >
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
+      style={styles.scoreCard}>
       <Text style={styles.quizTitle}>{name}</Text>
       <View style={styles.scoreRow}>
-           
         <View style={styles.scoreItem}>
-          <Icon 
-            name="trophy" 
-            size={24} 
-            color="#FFD700" 
+          <Icon
+            name="trophy"
+            size={24}
+            color="#FFD700"
             style={styles.scoreIcon}
-            />
+          />
           <Text style={styles.scoreLabel}>Best Score</Text>
           <Text style={styles.scoreValue}>
             {bestScore ? `${bestScore.percentage}%` : '-'}
@@ -35,14 +33,14 @@ const ScoreCard = ({ quizType, name, colors }) => {
             {bestScore ? new Date(bestScore.date).toLocaleDateString() : ''}
           </Text>
         </View>
-        
+
         <View style={styles.scoreDivider} />
-        
+
         <View style={styles.scoreItem}>
-          <Icon 
-            name="clock-outline" 
-            size={24} 
-            color="#fff" 
+          <Icon
+            name="clock-outline"
+            size={24}
+            color="#fff"
             style={styles.scoreIcon}
           />
           <Text style={styles.scoreLabel}>Last Score</Text>
@@ -53,14 +51,14 @@ const ScoreCard = ({ quizType, name, colors }) => {
             {lastScore ? new Date(lastScore.date).toLocaleDateString() : ''}
           </Text>
         </View>
-        
+
         <View style={styles.scoreDivider} />
-        
+
         <View style={styles.scoreItem}>
-          <Icon 
-            name="notebook-outline" 
-            size={24} 
-            color="#fff" 
+          <Icon
+            name="notebook-outline"
+            size={24}
+            color="#fff"
             style={styles.scoreIcon}
           />
           <Text style={styles.scoreLabel}>Total Games</Text>
@@ -95,22 +93,20 @@ const ScoreCard = ({ quizType, name, colors }) => {
 
 const TabScoreScreen = () => {
   const quizTypes = [
-    { name: 'History Quiz', type: 'HISTORY', colors: ['#FF512F', '#DD2476'] },
-    { name: 'Sport Quiz', type: 'SPORT', colors: ['#4776E6', '#8E54E9'] },
-    { name: 'Capitals Quiz', type: 'CAPITALS', colors: ['#00b09b', '#96c93d'] },
-    { name: 'Film Quiz', type: 'FILM', colors: ['#f12711', '#f5af19'] },
+    {name: 'History Quiz', type: 'HISTORY', colors: ['#FF512F', '#DD2476']},
+    {name: 'Sport Quiz', type: 'SPORT', colors: ['#4776E6', '#8E54E9']},
+    {name: 'Capitals Quiz', type: 'CAPITALS', colors: ['#00b09b', '#96c93d']},
+    {name: 'Film Quiz', type: 'FILM', colors: ['#f12711', '#f5af19']},
   ];
 
   return (
     <LinearGradient
       colors={['#1a2a6c', '#b21f1f', '#fdbb2d']}
-      style={styles.container}
-    >
-        <SafeAreaView/>
-      <ScrollView 
+      style={styles.container}>
+      <SafeAreaView />
+      <ScrollView
         style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         <Text style={styles.screenTitle}>Quiz Scores</Text>
         <View style={styles.scoreCardsContainer}>
           {quizTypes.map((quiz, index) => (
@@ -123,7 +119,7 @@ const TabScoreScreen = () => {
           ))}
         </View>
       </ScrollView>
-        <View style={{height:120}}></View>
+      <View style={{height: 120}}></View>
     </LinearGradient>
   );
 };
@@ -131,6 +127,7 @@ const TabScoreScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: '5%',
   },
   scrollView: {
     flex: 1,
@@ -142,7 +139,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 10,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 3,
   },
   scoreCardsContainer: {
@@ -154,7 +151,7 @@ const styles = StyleSheet.create({
     padding: 20,
     elevation: 5,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
@@ -165,7 +162,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
   },
   scoreRow: {
@@ -181,7 +178,7 @@ const styles = StyleSheet.create({
   scoreIcon: {
     marginBottom: 5,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
   },
   scoreLabel: {
@@ -191,7 +188,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     textAlign: 'center',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
   },
   scoreValue: {
@@ -199,7 +196,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
   },
   scoreDate: {
@@ -208,7 +205,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     marginTop: 2,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
   },
   scoreDivider: {
@@ -229,7 +226,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
   },
   scoresList: {
@@ -244,7 +241,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
   },
   recentScoreDate: {
@@ -252,7 +249,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     opacity: 0.8,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
   },
 });

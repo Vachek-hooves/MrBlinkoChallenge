@@ -119,6 +119,7 @@ const TabTrueGame = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: '5%',
   },
   safeArea: {
     flex: 1,
