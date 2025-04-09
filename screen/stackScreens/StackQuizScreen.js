@@ -34,7 +34,7 @@ const BackgroundInfo = ({text, onContinue}) => {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 500,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   }, []);
 
@@ -101,26 +101,21 @@ const StackQuizScreen = ({route, navigation}) => {
     const quizData = getQuizByType(quizType);
     setQuestions(quizData);
 
-    // Start intro animation immediately
-    // if (introAnimation.current) {
-    //   introAnimation.current.play(0, 120); // Play from frame 0 to 120 (adjust based on your animation)
-    // }
+    // Start with intro visible
+    fadeAnim.setValue(1);
 
-    // Hide intro after animation
     const timer = setTimeout(() => {
+      // Fade out intro
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 500,
         useNativeDriver: true,
       }).start(() => {
         setShowIntro(false);
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }).start();
+        // Reset animation value for main content
+        fadeAnim.setValue(1);
       });
-    }, 3000); // Increased to 3s to ensure animation completes
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [quizType]);
@@ -190,11 +185,8 @@ const StackQuizScreen = ({route, navigation}) => {
       useNativeDriver: true,
     }).start(() => {
       callback();
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }).start();
+      // Reset animation value immediately
+      fadeAnim.setValue(1);
     });
   };
 
@@ -285,9 +277,9 @@ const StackQuizScreen = ({route, navigation}) => {
               ref={introAnimation}
               source={require('../../assets/animations/quiz.json')}
               style={styles.introAnimation}
-              autoPlay={true} // Changed to true
-              loop={true} // Changed to true for continuous animation
-              speed={0.5} // Normal speed
+              autoPlay={true}
+              loop={true}
+              speed={0.5}
               resizeMode="cover"
             />
           </View>
@@ -316,8 +308,7 @@ const StackQuizScreen = ({route, navigation}) => {
             <Text style={styles.score}>Score: {score}</Text>
           </View>
 
-          <Animated.View
-            style={[styles.questionContainer, {opacity: fadeAnim}]}>
+          <View style={styles.questionContainer}>
             <Text style={styles.question}>
               {questions[currentQuestionIndex].question}
             </Text>
@@ -342,7 +333,7 @@ const StackQuizScreen = ({route, navigation}) => {
                 );
               })}
             </View>
-          </Animated.View>
+          </View>
 
           {showBackground && questions[currentQuestionIndex].background && (
             <BackgroundInfo
@@ -352,9 +343,9 @@ const StackQuizScreen = ({route, navigation}) => {
           )}
         </View>
       </ScrollView>
-      <View style={{height: 80}}></View>
+      {/* <View style={{height: 80}}></View> */}
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.returnButton}
         onPress={() => navigation.goBack()}>
         <LinearGradient
@@ -364,7 +355,7 @@ const StackQuizScreen = ({route, navigation}) => {
           style={styles.returnButtonGradient}>
           <Icon name="keyboard-return" size={28} color="#fff" />
         </LinearGradient>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </LinearGradient>
   );
 };
@@ -431,6 +422,7 @@ const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
     minHeight: '100%',
+    paddingTop:'5%'
   },
   header: {
     marginBottom: 30,
