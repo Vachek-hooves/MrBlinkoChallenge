@@ -142,30 +142,71 @@ const StackTrueGame = ({route, navigation}) => {
   const [showBackground, setShowBackground] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
-  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
   const introAnimation = useRef(null);
   const [showAnimation, setShowAnimation] = useState(false);
   const [isCorrectAnimation, setIsCorrectAnimation] = useState(true);
   const animationRef = useRef(null);
 
   useEffect(() => {
+    // Start with intro visible
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: false, // Changed to false for better Android compatibility
+    }).start();
+
     const timer = setTimeout(() => {
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 500,
-        useNativeDriver: true,
+        useNativeDriver: false, // Changed to false for better Android compatibility
       }).start(() => {
         setShowIntro(false);
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }).start();
       });
     }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Add a check for questions array
+  if (!questions || questions.length === 0) {
+    return (
+      <LinearGradient
+        colors={['#1a2a6c', '#b21f1f', '#fdbb2d']}
+        style={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.mainContent}>
+            <Text style={styles.quizTitle}>No questions available</Text>
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
+    );
+  }
+
+  if (showIntro) {
+    return (
+      <LinearGradient
+        colors={['#1a2a6c', '#b21f1f', '#fdbb2d']}
+        style={styles.container}>
+        <Animated.View style={[styles.introContainer, {opacity: fadeAnim}]}>
+          <View style={styles.animationContainer}>
+            <LottieView
+              ref={introAnimation}
+              source={require('../../assets/animations/quiz.json')}
+              style={styles.introAnimation}
+              autoPlay={true}
+              loop={true}
+              speed={0.5}
+              resizeMode="cover"
+            />
+          </View>
+          <Text style={styles.introTitle}>True or False</Text>
+          <Text style={styles.introSubtitle}>Get Ready!</Text>
+        </Animated.View>
+      </LinearGradient>
+    );
+  }
 
   const handleSelectAnswer = async answer => {
     setSelectedAnswer(answer);
@@ -240,30 +281,6 @@ const StackTrueGame = ({route, navigation}) => {
       setShowResult(true);
     }
   };
-
-  if (showIntro) {
-    return (
-      <LinearGradient
-        colors={['#1a2a6c', '#b21f1f', '#fdbb2d']}
-        style={styles.container}>
-        <Animated.View style={[styles.introContainer, {opacity: fadeAnim}]}>
-          <View style={styles.animationContainer}>
-            <LottieView
-              ref={introAnimation}
-              source={require('../../assets/animations/quiz.json')}
-              style={styles.introAnimation}
-              autoPlay={true}
-              loop={true}
-              speed={0.5}
-              resizeMode="cover"
-            />
-          </View>
-          <Text style={styles.introTitle}>True or False</Text>
-          <Text style={styles.introSubtitle}>Get Ready!</Text>
-        </Animated.View>
-      </LinearGradient>
-    );
-  }
 
   if (showResult) {
     const percentage = Math.round((score / questions.length) * 100);
@@ -359,8 +376,7 @@ const StackTrueGame = ({route, navigation}) => {
               </View>
             )}
 
-            <Animated.View
-              style={[styles.questionContainer, {opacity: fadeAnim}]}>
+            <View style={styles.questionContainer}>
               <Text style={styles.question}>
                 {questions[currentQuestionIndex].question}
               </Text>
@@ -387,7 +403,7 @@ const StackTrueGame = ({route, navigation}) => {
                   showAnswer={showAnswer}
                 />
               </View>
-            </Animated.View>
+            </View>
 
             {showBackground && (
               <BackgroundInfo
@@ -398,7 +414,7 @@ const StackTrueGame = ({route, navigation}) => {
           </View>
         </ScrollView>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.returnButton}
           onPress={() => navigation.goBack()}>
           <LinearGradient
@@ -408,7 +424,7 @@ const StackTrueGame = ({route, navigation}) => {
             style={styles.returnButtonGradient}>
             <Icon name="keyboard-return" size={28} color="#fff" />
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </SafeAreaView>
     </LinearGradient>
   );
@@ -431,6 +447,7 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
     justifyContent: 'flex-start',
+    paddingTop: '20%',
   },
   header: {
     alignItems: 'center',
